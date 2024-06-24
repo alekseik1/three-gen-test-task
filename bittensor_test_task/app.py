@@ -1,7 +1,8 @@
 import random
+import uuid
 from queue import Queue
 from time import sleep
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -16,6 +17,15 @@ finished_orders = set()
 class Order(BaseModel):
     order_id: UUID
 
+
+def reproducible_uuid4(seed: int = 0):
+    rd = random.Random()
+    rd.seed(seed)
+    while True:
+        yield uuid.UUID(int=rd.getrandbits(128), version=4)
+
+
+uuid_generator = reproducible_uuid4()
 
 # To handle the delusional DDoSer
 client_ip_counts = {}
@@ -39,7 +49,7 @@ async def limit_ip_requests(request, call_next):
 
 @client_app.post("/order/")
 async def make_order():
-    order = Order(order_id=uuid4())
+    order = Order(order_id=next(uuid_generator))
     order_queue.put(order)
     while order.order_id not in finished_orders:
         sleep(1)

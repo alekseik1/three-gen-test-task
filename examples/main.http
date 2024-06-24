@@ -1,0 +1,13 @@
+### User order
+POST {{user}}/order
+
+{"client_id": 1}
+
+### Barista cook
+GET {{barista}}/start
+
+
+### Barista finish
+POST {{barista}}/finish
+
+{"client_id": 1}

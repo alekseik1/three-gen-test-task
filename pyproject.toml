@@ -13,9 +13,6 @@ fastapi = "^0.111.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.10"
-pytest = "^8.2.2"
-anyio = "^4.4.0"
-httpx = "^0.27.0"
 
 [build-system]
 requires = ["poetry-core"]

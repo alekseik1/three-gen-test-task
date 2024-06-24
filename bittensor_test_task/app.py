@@ -48,12 +48,12 @@ async def make_order():
 
 
 @barista_app.get("/start/")
-async def start():
+async def start() -> Order:
     if order_queue.empty():
         raise HTTPException(status_code=404, detail="No orders available")
     order = order_queue.get()
     sleep(random.randint(30, 60))
-    return {"client_id": order.order_id}
+    return order
 
 
 @barista_app.post("/finish/")
